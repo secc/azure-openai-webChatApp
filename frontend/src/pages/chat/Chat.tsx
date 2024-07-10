@@ -12,7 +12,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import styles from './Chat.module.css'
-import Contoso from '../../assets/Contoso.svg'
+import Contoso from '../../assets/SEC_logo_solid_black.svg'
 import { XSSAllowTags } from '../../constants/sanatizeAllowables'
 
 import {
@@ -767,13 +767,8 @@ const Chat = () => {
             {!messages || messages.length < 1 ? (
               <Stack className={styles.chatEmptyState}>
                 <img src={ui?.chat_logo ? ui.chat_logo : Contoso} className={styles.chatIcon} aria-hidden="true" />
-<<<<<<< Updated upstream
-                <h1 className={styles.chatEmptyStateTitle}>{ui?.chat_title}</h1>
-                <h2 className={styles.chatEmptyStateSubtitle}>{ui?.chat_description}</h2>
-=======
                 <h1 className={styles.chatEmptyStateTitle}>Sermon Search</h1>
                 <h2 className={styles.chatEmptyStateSubtitle}>This chatbot has been trained on Carl Kuhl's sermons</h2>
->>>>>>> Stashed changes
               </Stack>
             ) : (
               <div className={styles.chatMessageStream} style={{ marginBottom: isLoading ? '40px' : '0px' }} role="log">
