@@ -359,6 +359,7 @@ const Chat = () => {
       }
       if (response?.body) {
         const reader = response.body.getReader()
+        console.log('reader: ' + reader);
 
         let runningText = ''
         while (true) {
@@ -371,14 +372,18 @@ const Chat = () => {
           objects.forEach(obj => {
             try {
               if (obj !== '' && obj !== '{}') {
+                console.log('obj: ' + obj);
                 runningText += obj
+                console.log('runningText: ' + runningText);
                 result = JSON.parse(runningText)
+                console.log('content: ' + result.choices?.[0]?.messages?.[0].content);
                 if (!result.choices?.[0]?.messages?.[0].content) {
                   errorResponseMessage = NO_CONTENT_ERROR
                   throw Error()
                 }
                 if (result.choices?.length > 0) {
                   result.choices[0].messages.forEach(msg => {
+                    console.log('msg: ' + msg);
                     msg.id = result.id
                     msg.date = new Date().toISOString()
                   })
