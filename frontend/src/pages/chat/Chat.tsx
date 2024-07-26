@@ -358,6 +358,7 @@ const Chat = () => {
         return
       }
       if (response?.body) {
+        console.log(response.body);
         const reader = response.body.getReader()
         console.log('reader: ' + reader);
 
@@ -366,8 +367,10 @@ const Chat = () => {
           setProcessMessages(messageStatus.Processing)
           const { done, value } = await reader.read()
           if (done) break
+          console.log('value: ' + value);
 
           var text = new TextDecoder('utf-8').decode(value)
+          console.log('text: ' + text);
           const objects = text.split('\n')
           objects.forEach(obj => {
             try {
