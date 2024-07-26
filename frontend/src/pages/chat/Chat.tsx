@@ -641,10 +641,10 @@ const Chat = () => {
             .then(res => {
               if (!res.ok) {
                 let errorMessage =
-                  "An error occurred. Answers can't be saved at this time. If the problem persists, please contact the site administrator."
+                  "I wasn't able to save that last message. This happens sometimes--my creators in IT are working on that." //CHANGED LANGUAGE
                 let errorChatMsg: ChatMessage = {
                   id: uuid(),
-                  role: ERROR,
+                  role: ASSISTANT, //CHANGED FROM ERROR
                   content: errorMessage,
                   date: new Date().toISOString()
                 }
