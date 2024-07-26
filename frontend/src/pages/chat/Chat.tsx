@@ -461,11 +461,27 @@ const Chat = () => {
         errorMessage = parseErrorMessage(errorMessage)
 
         console.log('Error msg is on line 463');
-        let errorChatMsg: ChatMessage = {
+        /*let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
           content: errorMessage,
           date: new Date().toISOString()
+        }*/
+        let errorChatMsg: ChatMessage;
+        if (errorMessage.includes("Unterminated string")) {
+            errorChatMsg = {
+                id: uuid(),
+                role: "ASSISTANT",
+                content: "Uh-oh! I seem to have lost my train of thought. Could you please reword your question and ask me again?",
+                date: new Date().toISOString()
+            };
+        } else {
+            errorChatMsg = {
+                id: uuid(),
+                role: "ERROR",
+                content: errorMessage,
+                date: new Date().toISOString()
+            };
         }
 
         let resultConversation
