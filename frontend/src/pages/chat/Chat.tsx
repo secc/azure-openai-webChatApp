@@ -261,27 +261,11 @@ const Chat = () => {
 
         errorMessage = parseErrorMessage(errorMessage)
 
-        /*let errorChatMsg: ChatMessage = {
+        let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
           content: errorMessage,
           date: new Date().toISOString()
-        }*/
-        let errorChatMsg: ChatMessage;
-        if (errorMessage.includes("Unterminated string")) {
-            errorChatMsg = {
-                id: uuid(),
-                role: "ASSISTANT",
-                content: "Uh-oh! I seem to have lost my train of thought. Could you please reword your question and ask me again?",
-                date: new Date().toISOString()
-            };
-        } else {
-            errorChatMsg = {
-                id: uuid(),
-                role: "ERROR",
-                content: errorMessage,
-                date: new Date().toISOString()
-            };
         }
 
         conversation.messages.push(errorChatMsg)
@@ -475,12 +459,30 @@ const Chat = () => {
 
         errorMessage = parseErrorMessage(errorMessage)
 
-        let errorChatMsg: ChatMessage = {
+        /*let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
           content: errorMessage,
           date: new Date().toISOString()
+        }*/
+
+        let errorChatMsg: ChatMessage;
+        if (errorMessage.includes("Unterminated string")) {
+            errorChatMsg = {
+                id: uuid(),
+                role: "ASSISTANT",
+                content: "Uh-oh! I seem to have lost my train of thought. Could you please reword your question and ask me again?",
+                date: new Date().toISOString()
+            };
+        } else {
+            errorChatMsg = {
+                id: uuid(),
+                role: "ERROR",
+                content: errorMessage,
+                date: new Date().toISOString()
+            };
         }
+
         let resultConversation
         if (conversationId) {
           resultConversation = appStateContext?.state?.chatHistory?.find(conv => conv.id === conversationId)
