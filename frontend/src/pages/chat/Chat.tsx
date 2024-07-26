@@ -260,7 +260,7 @@ const Chat = () => {
         }
 
         errorMessage = parseErrorMessage(errorMessage)
-
+        console.log('Error msg is on line 264');
         let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
@@ -330,6 +330,7 @@ const Chat = () => {
         const responseJson = await response.json()
         errorResponseMessage =
           responseJson.error === undefined ? errorResponseMessage : parseErrorMessage(responseJson.error)
+        console.log('Error msg is on line 334');
         let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
@@ -459,28 +460,12 @@ const Chat = () => {
 
         errorMessage = parseErrorMessage(errorMessage)
 
-        /*let errorChatMsg: ChatMessage = {
+        console.log('Error msg is on line 463');
+        let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
           content: errorMessage,
           date: new Date().toISOString()
-        }*/
-
-        let errorChatMsg: ChatMessage;
-        if (errorMessage.includes("Unterminated string")) {
-            errorChatMsg = {
-                id: uuid(),
-                role: "ASSISTANT",
-                content: "Uh-oh! I seem to have lost my train of thought. Could you please reword your question and ask me again?",
-                date: new Date().toISOString()
-            };
-        } else {
-            errorChatMsg = {
-                id: uuid(),
-                role: "ERROR",
-                content: errorMessage,
-                date: new Date().toISOString()
-            };
         }
 
         let resultConversation
@@ -497,6 +482,7 @@ const Chat = () => {
         } else {
           if (!result.history_metadata) {
             console.error('Error retrieving data.', result)
+            console.log('Error msg is on line 486');
             let errorChatMsg: ChatMessage = {
               id: uuid(),
               role: ERROR,
