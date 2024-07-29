@@ -458,7 +458,7 @@ const Chat = () => {
         errorMessage = parseErrorMessage(errorMessage)
 
         if (errorMessage.includes("Unterminated string")) {
-          errorMessage = "Oops! I got a bit confused. Can you rephrase your question? Refreshing the page or starting a new chat might help too.";
+          errorMessage = "Uh-oh! I got a bit confused. Can you rephrase your question? Starting a new chat might also help.";
         }
 
         let errorChatMsg: ChatMessage = {
