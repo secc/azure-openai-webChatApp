@@ -260,7 +260,6 @@ const Chat = () => {
         }
 
         errorMessage = parseErrorMessage(errorMessage)
-        console.log('Error msg is on line 264');
         let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
@@ -330,7 +329,6 @@ const Chat = () => {
         const responseJson = await response.json()
         errorResponseMessage =
           responseJson.error === undefined ? errorResponseMessage : parseErrorMessage(responseJson.error)
-        console.log('Error msg is on line 334');
         let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
@@ -360,26 +358,25 @@ const Chat = () => {
         return
       }
       if (response?.body) {
-        console.log(response.body);
         const reader = response.body.getReader()
-        console.log('reader: ' + reader);
+        //console.log('reader: ' + reader);
 
         let runningText = ''
         while (true) {
           setProcessMessages(messageStatus.Processing)
           const { done, value } = await reader.read()
           if (done) break
-          console.log('value: ' + value);
+          //console.log('value: ' + value);
 
           var text = new TextDecoder('utf-8').decode(value)
-          console.log('text: ' + text);
+          //console.log('text: ' + text);
           const objects = text.split('\n')
           objects.forEach(obj => {
             try {
               if (obj !== '' && obj !== '{}') {
-                console.log('obj: ' + obj);
+                //console.log('obj: ' + obj);
                 runningText += obj
-                console.log('runningText: ' + runningText);
+                //console.log('runningText: ' + runningText);
                 result = JSON.parse(runningText)
                 console.log('content: ' + result.choices?.[0]?.messages?.[0].content);
                 if (!result.choices?.[0]?.messages?.[0].content) {
@@ -388,7 +385,7 @@ const Chat = () => {
                 }
                 if (result.choices?.length > 0) {
                   result.choices[0].messages.forEach(msg => {
-                    console.log('msg: ' + msg);
+                    //console.log('msg: ' + msg);
                     msg.id = result.id
                     msg.date = new Date().toISOString()
                   })
@@ -460,14 +457,13 @@ const Chat = () => {
 
         errorMessage = parseErrorMessage(errorMessage)
 
-        console.log('Error msg is on line 463');
-        /*let errorChatMsg: ChatMessage = {
+        let errorChatMsg: ChatMessage = {
           id: uuid(),
-          role: ERROR,
+          role: ASSISTANT,
           content: errorMessage,
           date: new Date().toISOString()
-        }*/
-        let errorChatMsg: ChatMessage;
+        }
+        /*let errorChatMsg: ChatMessage;
         if (errorMessage.includes("Unterminated string")) {
             console.log('errorMessage includes unterminated string');
             errorChatMsg = {
@@ -483,9 +479,9 @@ const Chat = () => {
                 content: errorMessage,
                 date: new Date().toISOString()
             };
-        }
+        }*/
 
-        console.log(errorChatMsg);
+        //console.log(errorChatMsg);
 
         let resultConversation
         if (conversationId) {
@@ -501,7 +497,6 @@ const Chat = () => {
         } else {
           if (!result.history_metadata) {
             console.error('Error retrieving data.', result)
-            console.log('Error msg is on line 486');
             let errorChatMsg: ChatMessage = {
               id: uuid(),
               role: ERROR,
@@ -532,9 +527,7 @@ const Chat = () => {
         console.log('errorChatMsg being setMessages');
         console.log(errorChatMsg);
         setMessages([...messages, errorChatMsg])
-        console.log('setMessages successful')
       } else {
-        console.log('userMessage being setMessages');
         setMessages([...messages, userMessage])
       }
     } finally {
@@ -669,7 +662,7 @@ const Chat = () => {
             .then(res => {
               if (!res.ok) {
                 let errorMessage =
-                  "I wasn't able to save that last message. This happens sometimes--my creators in IT are working on that." //CHANGED LANGUAGE
+                  "Oops! I got a bit confused. Can you rephrase your question? Refreshing the page or starting a new chat might help too."
                 let errorChatMsg: ChatMessage = {
                   id: uuid(),
                   role: ASSISTANT, //CHANGED FROM ERROR
