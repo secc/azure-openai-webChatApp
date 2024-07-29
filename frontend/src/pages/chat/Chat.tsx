@@ -458,7 +458,7 @@ const Chat = () => {
         errorMessage = parseErrorMessage(errorMessage)
 
         if (errorMessage.includes("Unterminated string")) {
-          errorMessage = "Uh-oh! I seem to have lost my train of thought.";
+          errorMessage = "Oops! I got a bit confused. Can you rephrase your question? Refreshing the page or starting a new chat might help too.";
         }
 
         let errorChatMsg: ChatMessage = {
@@ -503,7 +503,7 @@ const Chat = () => {
             console.error('Error retrieving data.', result)
             let errorChatMsg: ChatMessage = {
               id: uuid(),
-              role: ERROR,
+              role: ASSISTANT,
               content: errorMessage,
               date: new Date().toISOString()
             }
@@ -666,7 +666,7 @@ const Chat = () => {
             .then(res => {
               if (!res.ok) {
                 let errorMessage =
-                  "Oops! I got a bit confused. Can you rephrase your question? Refreshing the page or starting a new chat might help too."
+                  "Oops! I wasn't able to save that last message. Can you rephrase your question?"
                 let errorChatMsg: ChatMessage = {
                   id: uuid(),
                   role: ASSISTANT, //CHANGED FROM ERROR
