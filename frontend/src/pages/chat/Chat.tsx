@@ -469,6 +469,7 @@ const Chat = () => {
         }*/
         let errorChatMsg: ChatMessage;
         if (errorMessage.includes("Unterminated string")) {
+            console.log('errorMessage includes unterminated string');
             errorChatMsg = {
                 id: uuid(),
                 role: "ASSISTANT",
@@ -526,8 +527,10 @@ const Chat = () => {
           return
         }
         appStateContext?.dispatch({ type: 'UPDATE_CURRENT_CHAT', payload: resultConversation })
+        console.log('errorChatMsg being setMessages');
         setMessages([...messages, errorChatMsg])
       } else {
+        console.log('userMessage being setMessages');
         setMessages([...messages, userMessage])
       }
     } finally {
