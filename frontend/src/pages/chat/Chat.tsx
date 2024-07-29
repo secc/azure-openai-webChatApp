@@ -457,6 +457,10 @@ const Chat = () => {
 
         errorMessage = parseErrorMessage(errorMessage)
 
+        if (errorMessage.includes("Unterminated string")) {
+          errorMessage = "Uh-oh! I seem to have lost my train of thought.";
+        }
+
         let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ASSISTANT,
