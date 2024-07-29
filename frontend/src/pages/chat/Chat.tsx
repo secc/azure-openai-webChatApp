@@ -260,13 +260,13 @@ const Chat = () => {
         }
 
         errorMessage = parseErrorMessage(errorMessage)
-
         let errorChatMsg: ChatMessage = {
           id: uuid(),
           role: ERROR,
           content: errorMessage,
           date: new Date().toISOString()
         }
+
         conversation.messages.push(errorChatMsg)
         appStateContext?.dispatch({ type: 'UPDATE_CURRENT_CHAT', payload: conversation })
         setMessages([...messages, errorChatMsg])
@@ -359,26 +359,33 @@ const Chat = () => {
       }
       if (response?.body) {
         const reader = response.body.getReader()
+        //console.log('reader: ' + reader);
 
         let runningText = ''
         while (true) {
           setProcessMessages(messageStatus.Processing)
           const { done, value } = await reader.read()
           if (done) break
+          //console.log('value: ' + value);
 
           var text = new TextDecoder('utf-8').decode(value)
+          //console.log('text: ' + text);
           const objects = text.split('\n')
           objects.forEach(obj => {
             try {
               if (obj !== '' && obj !== '{}') {
+                //console.log('obj: ' + obj);
                 runningText += obj
+                //console.log('runningText: ' + runningText);
                 result = JSON.parse(runningText)
+                console.log('content: ' + result.choices?.[0]?.messages?.[0].content);
                 if (!result.choices?.[0]?.messages?.[0].content) {
                   errorResponseMessage = NO_CONTENT_ERROR
                   throw Error()
                 }
                 if (result.choices?.length > 0) {
                   result.choices[0].messages.forEach(msg => {
+                    //console.log('msg: ' + msg);
                     msg.id = result.id
                     msg.date = new Date().toISOString()
                   })
@@ -450,12 +457,36 @@ const Chat = () => {
 
         errorMessage = parseErrorMessage(errorMessage)
 
+        if (errorMessage.includes("Unterminated string")) {
+          errorMessage = "Uh-oh! I got a bit confused. Can you rephrase your question? Starting a new chat might also help.";
+        }
+
         let errorChatMsg: ChatMessage = {
           id: uuid(),
-          role: ERROR,
+          role: ASSISTANT,
           content: errorMessage,
           date: new Date().toISOString()
         }
+        /*let errorChatMsg: ChatMessage;
+        if (errorMessage.includes("Unterminated string")) {
+            console.log('errorMessage includes unterminated string');
+            errorChatMsg = {
+                id: uuid(),
+                role: "ASSISTANT",
+                content: "Uh-oh! I seem to have lost my train of thought. Could you please reword your question and ask me again?",
+                date: new Date().toISOString()
+            };
+        } else {
+            errorChatMsg = {
+                id: uuid(),
+                role: "ERROR",
+                content: errorMessage,
+                date: new Date().toISOString()
+            };
+        }*/
+
+        //console.log(errorChatMsg);
+
         let resultConversation
         if (conversationId) {
           resultConversation = appStateContext?.state?.chatHistory?.find(conv => conv.id === conversationId)
@@ -472,7 +503,7 @@ const Chat = () => {
             console.error('Error retrieving data.', result)
             let errorChatMsg: ChatMessage = {
               id: uuid(),
-              role: ERROR,
+              role: ASSISTANT,
               content: errorMessage,
               date: new Date().toISOString()
             }
@@ -497,6 +528,8 @@ const Chat = () => {
           return
         }
         appStateContext?.dispatch({ type: 'UPDATE_CURRENT_CHAT', payload: resultConversation })
+        console.log('errorChatMsg being setMessages');
+        console.log(errorChatMsg);
         setMessages([...messages, errorChatMsg])
       } else {
         setMessages([...messages, userMessage])
@@ -633,10 +666,10 @@ const Chat = () => {
             .then(res => {
               if (!res.ok) {
                 let errorMessage =
-                  "An error occurred. Answers can't be saved at this time. If the problem persists, please contact the site administrator."
+                  "Oops! I wasn't able to save that last message. Can you rephrase your question?"
                 let errorChatMsg: ChatMessage = {
                   id: uuid(),
-                  role: ERROR,
+                  role: ASSISTANT, //CHANGED FROM ERROR
                   content: errorMessage,
                   date: new Date().toISOString()
                 }
@@ -768,7 +801,7 @@ const Chat = () => {
               <Stack className={styles.chatEmptyState}>
                 <img src={ui?.chat_logo ? ui.chat_logo : Contoso} className={styles.chatIcon} aria-hidden="true" />
                 <h1 className={styles.chatEmptyStateTitle}>Sermon Search</h1>
-                <h2 className={styles.chatEmptyStateSubtitle}>This chatbot has been trained on Matt Reagan's sermons</h2>
+                <h2 className={styles.chatEmptyStateSubtitle}>This chatbot has been trained on Carl Kuhl's sermons</h2>
               </Stack>
             ) : (
               <div className={styles.chatMessageStream} style={{ marginBottom: isLoading ? '40px' : '0px' }} role="log">
