@@ -485,6 +485,8 @@ const Chat = () => {
             };
         }
 
+        console.log(errorChatMsg);
+
         let resultConversation
         if (conversationId) {
           resultConversation = appStateContext?.state?.chatHistory?.find(conv => conv.id === conversationId)
@@ -528,7 +530,9 @@ const Chat = () => {
         }
         appStateContext?.dispatch({ type: 'UPDATE_CURRENT_CHAT', payload: resultConversation })
         console.log('errorChatMsg being setMessages');
+        console.log(errorChatMsg);
         setMessages([...messages, errorChatMsg])
+        console.log('setMessages successful')
       } else {
         console.log('userMessage being setMessages');
         setMessages([...messages, userMessage])
